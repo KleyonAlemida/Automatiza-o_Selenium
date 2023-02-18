@@ -9,15 +9,14 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-# Dessa forma pegamos o arquivo "pai" do main que é oque estamos agora = aula316
+# Pegando o arquivo raiz
 ROOT_FOLDER = Path(__file__).parent 
 CHROMEDRIVER_EXEC = ROOT_FOLDER / 'drivers' /'chromedriver.exe'
-# Aqui acima estamos linkando com o caminho da line 7, falamos para ele oque quermos dentro do folder aula 316
+# Acima pegamos a subpasta e o driver contido
 
 def make_chrome_browser(*options: str) -> webdriver.Chrome:  
     chrome_options = webdriver.ChromeOptions()
-
-    #chrome_options.add.argument('--headless')
+    
     if options is not None:
         for option in options:
             chrome_options.add_argument(option)
@@ -36,7 +35,7 @@ def make_chrome_browser(*options: str) -> webdriver.Chrome:
 if __name__ == '__main__':
     TIME_TO_WAIT = 10
     # Example
-    # O headles é basicamente deixar invisivel
+
     options = ()
     browser = make_chrome_browser(*options)
 
@@ -44,12 +43,15 @@ if __name__ == '__main__':
     
     # Espere para encontra o input
     search_input = WebDriverWait(browser, TIME_TO_WAIT).until(
-        EC.presence_of_element_located((By.NAME, 'q'))) # Aguardar pelo fato de que é feito por JS e demora um pouco
-
-    search_input.send_keys('Hello World!') # Esse send keys literalmente pedimos para ele usar teclas para digitar o text que passamos
-    search_input.send_keys(Keys.ENTER) # aqui estamos mandando que após digitar o texto acima pressionar enter
-
+        EC.presence_of_element_located((By.NAME, 'q'))) 
+    
+    # Pedimos para digitar o text abaixo
+    search_input.send_keys('Hello World!') 
+    search_input.send_keys(Keys.ENTER) 
+    # Acima configuramos para o comando dar enter após a digitação da linha 49
+    
     results = browser.find_element(By.ID, 'search')
     links = results.find_elements(By.TAG_NAME, 'a')
-    links[0].click()
+    links[0].click() # Aqui pedimos para o comando dar um click no primeiro resultado
+    
 time.sleep(TIME_TO_WAIT)
